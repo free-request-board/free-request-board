@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { makeToken } from "@/lib/tokens";
+import { supabaseAdmin } from "../../../lib/supabaseAdmin";
+import { makeToken } from "../../../lib/tokens";
 
 export async function POST(request: Request) {
   const form = await request.formData();
