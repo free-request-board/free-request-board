@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { supabaseAdmin } from "../../../lib/supabaseAdmin";
 import OwnerActions from "./owner-actions";
 
 export const dynamic = "force-dynamic";
