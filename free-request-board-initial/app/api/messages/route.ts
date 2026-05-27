@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { redirect } from "next/navigation";
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { supabaseAdmin } from "../../../lib/supabaseAdmin";
 
 export async function POST(request: Request) {
   const form = await request.formData();
