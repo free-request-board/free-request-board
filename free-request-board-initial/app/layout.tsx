@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import UserMenu from "./components/UserMenu";
 
 export const metadata: Metadata = {
   title: "関西 小さな依頼掲示板",
@@ -14,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <header className="site-header">
             <a href="/" className="brand">関西 小さな依頼掲示板</a>
             <nav>
-              <a href="/new">依頼を投稿する</a>
+              <UserMenu />
             </nav>
           </header>
           {children}
