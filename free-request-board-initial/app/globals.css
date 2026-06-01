@@ -18,7 +18,16 @@ nav a, .button {
   text-decoration: none; background: #334d2f; color: #fff; border: none; cursor: pointer;
   font-weight: 700;
 }
-.button.secondary { background: #fff; color: #334d2f; border: 1px solid #cfc7b9; }
+.button.secondary {
+  background: #4f5f3a;
+  color: #ffffff;
+  border: 1px solid #4f5f3a;
+}
+
+.button.secondary:hover {
+  background: #3f4d2f;
+  border-color: #3f4d2f;
+}
 .hero, .panel, .request-card {
   background: #fffdf7; border: 1px solid #ded6c8; border-radius: 22px;
   padding: 24px; box-shadow: 0 10px 30px rgba(46,35,20,.05); margin: 18px 0;
