@@ -49,7 +49,7 @@ export default function AccountClient() {
     const { error } = await supabaseBrowser.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: window.location.origin + "/account"
+        emailRedirectTo: window.location.origin + "/auth/callback"
       }
     });
 
