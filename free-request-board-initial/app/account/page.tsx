@@ -10,15 +10,19 @@ export default function AccountPage() {
 
       <AccountClient />
 
-      <section id="temporary-contact" className="account-section">
-        <h2>一時連絡</h2>
-        <p>
-          依頼を引き受けた、または自分の依頼が引き受けられた場合にだけ使える連絡箱です。
-        </p>
-        <div className="notice">
-          まだ依頼を何も受けていないか、あなたの依頼が引き受けられていません。
-        </div>
-      </section>
+     <section id="temporary-contact" className="account-section">
+  <h2>一時連絡</h2>
+  <p>
+    依頼に関する連絡を一時的に行えます。
+  </p>
+  <p className="muted">
+    ※あくまでも、ユーザーが匿名のまま連絡先を交換するための連絡機能ですので、メールや電話といった連絡ツールで相談することをおすすめします。
+    情報量が多くなると、サーバーが不安定になる可能性があります。他の利用者様への思いやりをよろしくお願いいたします。
+  </p>
+  <div className="notice">
+    まだ依頼を何も受けていないか、あなたの依頼が引き受けられていません。
+  </div>
+</section>
 
       <section id="accepted-requests" className="account-section">
         <h2>受けた依頼</h2>
