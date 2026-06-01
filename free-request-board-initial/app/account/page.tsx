@@ -25,16 +25,16 @@ export default function AccountPage() {
 </section>
 
       <section id="accepted-requests" className="account-section">
-        <h2>受けた依頼</h2>
+        <h2>あなたの引き受けた依頼</h2>
         <div className="notice">
-          現在、あなたが受けた依頼は表示されていません。
+          現在、あなたが受けた依頼はありません。
         </div>
       </section>
 
       <section id="my-requests" className="account-section">
-        <h2>自分の依頼</h2>
+        <h2>あなたの掲示中の依頼</h2>
         <div className="notice">
-          現在、あなたのアカウントに紐づいた依頼は表示されていません。
+          現在、あなたが掲示している依頼はありません。
         </div>
       </section>
     </main>
