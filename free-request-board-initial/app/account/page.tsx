@@ -5,7 +5,7 @@ export default function AccountPage() {
     <main className="panel">
       <h1>アカウント</h1>
       <p className="muted">
-        ログインしている場合は、メールアドレスに紐づいた依頼・申請・一時連絡をここに表示していく予定です。
+        あなたの掲示板の依頼利用状況について確認できます
       </p>
 
       <AccountClient />
