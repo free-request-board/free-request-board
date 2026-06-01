@@ -159,3 +159,42 @@ textarea { min-height: 130px; resize: vertical; }
 .account-section {
   margin-top: 28px;
 }
+.user-menu .account-menu-item {
+  display: block;
+  padding: 12px;
+  border-radius: 14px;
+  text-decoration: none;
+  background: #fffdf7;
+  color: #1f2933;
+  border: 1px solid #eee5d8;
+  margin-bottom: 8px;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.user-menu .account-menu-item strong {
+  display: block;
+  color: #1f2933;
+  font-size: 15px;
+}
+
+.user-menu .account-menu-item span {
+  display: block;
+  margin-top: 4px;
+  color: #5d6b78;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.user-menu .account-menu-item:hover {
+  background: #334d2f;
+  color: #ffffff;
+  border-color: #334d2f;
+}
+
+.user-menu .account-menu-item:hover strong {
+  color: #ffffff;
+}
+
+.user-menu .account-menu-item:hover span {
+  color: #eef1e8;
+}
