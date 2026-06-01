@@ -68,12 +68,18 @@ textarea { min-height: 130px; resize: vertical; }
   width: 52px;
   height: 52px;
   border-radius: 999px;
-  border: 1px solid #cfc7b9;
-  background: #334d2f;
-  color: #fff;
+  border: 1px solid #d8d0c2;
+  background: #fffdf7;
+  color: #1f2933;
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 8px 20px rgba(46, 35, 20, 0.12);
+}
+
+.account-button:hover {
+  background: #334d2f;
+  color: #ffffff;
+  border-color: #334d2f;
 }
 
 .account-icon {
@@ -121,10 +127,20 @@ textarea { min-height: 130px; resize: vertical; }
   border-radius: 14px;
   text-decoration: none;
   color: #1f2933;
+  background: #fffdf7;
+  border: 1px solid #eee5d8;
+  margin-bottom: 8px;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .account-menu-item:hover {
-  background: #eef1e8;
+  background: #334d2f;
+  color: #ffffff;
+  border-color: #334d2f;
+}
+
+.account-menu-item:hover span {
+  color: #eef1e8;
 }
 
 .account-menu-item strong {
