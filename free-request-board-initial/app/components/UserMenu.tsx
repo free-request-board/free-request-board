@@ -74,7 +74,21 @@ export default function UserMenu() {
         onClick={() => setOpen(!open)}
         aria-label="アカウントメニューを開く"
       >
-        <span className="account-icon">人</span>
+<span className="account-icon" aria-hidden="true">
+  <svg
+    viewBox="0 0 24 24"
+    width="26"
+    height="26"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle cx="12" cy="8" r="4" fill="currentColor" />
+    <path
+      d="M4.5 20c1.2-4.2 4-6.2 7.5-6.2s6.3 2 7.5 6.2"
+      fill="currentColor"
+    />
+  </svg>
+</span>
       </button>
 
       {open && (
