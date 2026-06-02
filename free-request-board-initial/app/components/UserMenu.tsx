@@ -70,9 +70,12 @@ function ProfileIcon({ type }: { type: string }) {
 
 export default function UserMenu() {
   const [open, setOpen] = useState(false);
+  const [iconType, setIconType] = useState("person");
+
   const [user, setUser] = useState<UserState>({
-    email: null,
-    loading: true
+  email: null,
+  loading: true
+});
   });
 
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -80,27 +83,61 @@ export default function UserMenu() {
   useEffect(() => {
     let mounted = true;
 
-    async function loadUser() {
-      const { data } = await supabaseBrowser.auth.getUser();
+async function loadUser() {
+  const { data } = await supabaseBrowser.auth.getUser();
 
-      if (!mounted) return;
+  if (!mounted) return;
 
-      setUser({
-        email: data.user?.email ?? null,
-        loading: false
-      });
+  setUser({
+    email: data.user?.email ?? null,
+    loading: false
+  });
+
+  if (data.user) {
+    const { data: profile } = await supabaseBrowser
+      .from("profiles")
+      .select("icon_type")
+      .eq("id", data.user.id)
+      .maybeSingle();
+
+    if (!mounted) return;
+
+    if (profile?.icon_type) {
+      setIconType(profile.icon_type);
+    } else {
+      setIconType("person");
     }
+  } else {
+    setIconType("person");
+  }
+}
 
     loadUser();
 
-    const { data: listener } = supabaseBrowser.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser({
-          email: session?.user?.email ?? null,
-          loading: false
-        });
+const { data: listener } = supabaseBrowser.auth.onAuthStateChange(
+  async (_event, session) => {
+    setUser({
+      email: session?.user?.email ?? null,
+      loading: false
+    });
+
+    if (session?.user) {
+      const { data: profile } = await supabaseBrowser
+        .from("profiles")
+        .select("icon_type")
+        .eq("id", session.user.id)
+        .maybeSingle();
+
+      if (profile?.icon_type) {
+        setIconType(profile.icon_type);
+      } else {
+        setIconType("person");
       }
-    );
+    } else {
+      setIconType("person");
+    }
+  }
+);
 
     return () => {
       mounted = false;
@@ -135,19 +172,7 @@ export default function UserMenu() {
         aria-label="アカウントメニューを開く"
       >
 <span className="account-icon" aria-hidden="true">
-  <svg
-    viewBox="0 0 24 24"
-    width="26"
-    height="26"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <circle cx="12" cy="8" r="4" fill="currentColor" />
-    <path
-      d="M4.5 20c1.2-4.2 4-6.2 7.5-6.2s6.3 2 7.5 6.2"
-      fill="currentColor"
-    />
-  </svg>
+  <ProfileIcon type={iconType} />
 </span>
       </button>
 
