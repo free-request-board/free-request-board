@@ -108,6 +108,11 @@ export default function UserMenu() {
             <span>困りごとや手伝ってほしいことを投稿します。</span>
           </a>
 
+          <a className="account-menu-item" href="/account/profile">
+  <strong>プロフィールを編集する</strong>
+  <span>表示名・アイコン・自己紹介を設定します。</span>
+</a>
+
           <a href="/" className="account-menu-item">
             <strong>依頼を見る</strong>
             <span>掲載中の依頼を確認します。</span>
