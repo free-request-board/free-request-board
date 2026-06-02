@@ -13,23 +13,36 @@ export default function AuthCallbackPage() {
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
 
-      if (!code) {
-        setMessage("ログイン確認用のコードが見つかりませんでした。もう一度ログインをお試しください。");
+      if (code) {
+        const { error } = await supabaseBrowser.auth.exchangeCodeForSession(code);
+
+        if (error) {
+          setMessage("ログイン処理に失敗しました：" + error.message);
+          return;
+        }
+
+        setMessage("ログインしました。アカウントページへ移動します。");
+
+        setTimeout(() => {
+          router.replace("/account");
+        }, 800);
+
         return;
       }
 
-      const { error } = await supabaseBrowser.auth.exchangeCodeForSession(code);
+      const { data } = await supabaseBrowser.auth.getSession();
 
-      if (error) {
-        setMessage("ログイン処理に失敗しました：" + error.message);
+      if (data.session) {
+        setMessage("ログインしました。アカウントページへ移動します。");
+
+        setTimeout(() => {
+          router.replace("/account");
+        }, 800);
+
         return;
       }
 
-      setMessage("ログインしました。アカウントページへ移動します。");
-
-      setTimeout(() => {
-        router.replace("/account");
-      }, 800);
+      setMessage("ログイン確認情報が見つかりませんでした。もう一度ログインをお試しください。");
     }
 
     handleLoginCallback();
