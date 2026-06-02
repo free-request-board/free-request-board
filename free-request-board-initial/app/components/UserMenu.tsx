@@ -76,7 +76,6 @@ export default function UserMenu() {
   email: null,
   loading: true
 });
-  });
 
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -183,19 +182,19 @@ const { data: listener } = supabaseBrowser.auth.onAuthStateChange(
             <p className="account-user-label">{label}</p>
           </div>
 
-          <a href="/account" className="account-menu-item">
-            <strong>アカウントページ</strong>
-            <span>ログイン状態やメール認証を確認します。</span>
-          </a>
+<a href="/account" className="account-menu-item">
+  <strong>アカウントページ</strong>
+  <span>ログイン状態やメール認証を確認します。</span>
+</a>
 
-          <a href="/new" className="account-menu-item">
-            <strong>依頼をする</strong>
-            <span>困りごとや手伝ってほしいことを投稿します。</span>
-          </a>
-
-          <a className="account-menu-item" href="/account/profile">
+<a className="account-menu-item" href="/account/profile">
   <strong>プロフィールを編集する</strong>
   <span>表示名・アイコン・自己紹介を設定します。</span>
+</a>
+
+<a href="/new" className="account-menu-item">
+  <strong>依頼をする</strong>
+  <span>困りごとや手伝ってほしいことを投稿します。</span>
 </a>
 
           <a href="/" className="account-menu-item">
