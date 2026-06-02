@@ -8,6 +8,66 @@ type UserState = {
   loading: boolean;
 };
 
+function ProfileIcon({ type }: { type: string }) {
+  if (type === "house") {
+    return (
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+        <path
+          d="M3 10.8L12 3l9 7.8"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M5.5 10.5V21h13V10.5"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M9.5 21v-6h5v6"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (type === "cat") {
+    return <span aria-hidden="true">🐱</span>;
+  }
+
+  if (type === "tool") {
+    return <span aria-hidden="true">🔧</span>;
+  }
+
+  if (type === "bag") {
+    return <span aria-hidden="true">🛍️</span>;
+  }
+
+  if (type === "bike") {
+    return <span aria-hidden="true">🚲</span>;
+  }
+
+  if (type === "leaf") {
+    return <span aria-hidden="true">🍃</span>;
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="8" r="4" fill="currentColor" />
+      <path
+        d="M4.5 20c1.2-4.2 4-6.2 7.5-6.2s6.3 2 7.5 6.2"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 export default function UserMenu() {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<UserState>({
