@@ -6,7 +6,7 @@ import { supabaseBrowser } from "../../../lib/supabaseBrowser";
 type Profile = {
   id: string;
   display_name: string | null;
-  icon_type: string;
+  icon_type: string | null;
   bio: string | null;
   area: string | null;
 };
@@ -30,16 +30,18 @@ export default function ProfileClient() {
 
   const [displayName, setDisplayName] = useState("");
   const [iconType, setIconType] = useState("person");
-  const [bio, setBio] = useState("");
   const [area, setArea] = useState("");
+  const [bio, setBio] = useState("");
 
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     async function loadProfile() {
       setLoading(true);
+      setMessage("");
 
-      const { data: userData, error: userError } = await supabaseBrowser.auth.getUser();
+      const { data: userData, error: userError } =
+        await supabaseBrowser.auth.getUser();
 
       if (userError || !userData.user) {
         setMessage("プロフィールを編集するにはログインが必要です。");
@@ -48,6 +50,7 @@ export default function ProfileClient() {
       }
 
       const currentUser = userData.user;
+
       setUserId(currentUser.id);
       setEmail(currentUser.email ?? "");
 
@@ -65,10 +68,11 @@ export default function ProfileClient() {
 
       if (data) {
         const profile = data as Profile;
+
         setDisplayName(profile.display_name ?? "");
         setIconType(profile.icon_type ?? "person");
-        setBio(profile.bio ?? "");
         setArea(profile.area ?? "");
+        setBio(profile.bio ?? "");
       }
 
       setLoading(false);
@@ -92,8 +96,8 @@ export default function ProfileClient() {
       id: userId,
       display_name: displayName.trim() || null,
       icon_type: iconType,
-      bio: bio.trim() || null,
       area: area.trim() || null,
+      bio: bio.trim() || null,
       last_seen_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     });
@@ -125,9 +129,11 @@ export default function ProfileClient() {
         <section className="panel">
           <h1>プロフィール編集</h1>
           <p>{message}</p>
-          <a className="button" href="/account">
-            ログインページへ
-          </a>
+          <p>
+            <a className="button" href="/account">
+              ログインページへ
+            </a>
+          </p>
         </section>
       </main>
     );
@@ -137,6 +143,7 @@ export default function ProfileClient() {
     <main>
       <section className="panel">
         <h1>プロフィール編集</h1>
+
         <p className="muted">
           掲示板上で表示される名前やアイコンを設定できます。メールアドレスは公開されません。
         </p>
@@ -147,7 +154,7 @@ export default function ProfileClient() {
 
         <form onSubmit={saveProfile} className="form-stack">
           <label>
-            表示名
+            <span>表示名</span>
             <input
               value={displayName}
               onChange={(event) => setDisplayName(event.target.value)}
@@ -157,8 +164,11 @@ export default function ProfileClient() {
           </label>
 
           <label>
-            アイコン
-            <select value={iconType} onChange={(event) => setIconType(event.target.value)}>
+            <span>アイコン</span>
+            <select
+              value={iconType}
+              onChange={(event) => setIconType(event.target.value)}
+            >
               {iconOptions.map((icon) => (
                 <option key={icon.value} value={icon.value}>
                   {icon.label}
@@ -168,7 +178,7 @@ export default function ProfileClient() {
           </label>
 
           <label>
-            対応地域
+            <span>対応地域</span>
             <input
               value={area}
               onChange={(event) => setArea(event.target.value)}
@@ -178,12 +188,12 @@ export default function ProfileClient() {
           </label>
 
           <label>
-            自己紹介
+            <span>自己紹介</span>
             <textarea
               value={bio}
               onChange={(event) => setBio(event.target.value)}
               placeholder="できること、得意なこと、連絡時に伝えておきたいことなど"
-              rows={5}
+              rows={6}
               maxLength={300}
             />
           </label>
