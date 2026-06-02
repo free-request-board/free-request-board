@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -36,49 +37,68 @@ export default function ProfileClient() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    let mounted = true;
+
     async function loadProfile() {
-      setLoading(true);
-      setMessage("");
+      try {
+        setLoading(true);
+        setMessage("");
 
-      const { data: userData, error: userError } =
-        await supabaseBrowser.auth.getUser();
+        const { data: userData, error: userError } =
+          await supabaseBrowser.auth.getUser();
 
-      if (userError || !userData.user) {
-        setMessage("プロフィールを編集するにはログインが必要です。");
-        setLoading(false);
-        return;
+        if (!mounted) return;
+
+        if (userError || !userData.user) {
+          setMessage("プロフィールを編集するにはログインが必要です。");
+          return;
+        }
+
+        const currentUser = userData.user;
+
+        setUserId(currentUser.id);
+        setEmail(currentUser.email ?? "");
+
+        const { data, error } = await supabaseBrowser
+          .from("profiles")
+          .select("id, display_name, icon_type, bio, area")
+          .eq("id", currentUser.id)
+          .maybeSingle();
+
+        if (!mounted) return;
+
+        if (error) {
+          setMessage("プロフィールの読み込みに失敗しました：" + error.message);
+          return;
+        }
+
+        if (data) {
+          const profile = data as Profile;
+
+          setDisplayName(profile.display_name ?? "");
+          setIconType(profile.icon_type ?? "person");
+          setArea(profile.area ?? "");
+          setBio(profile.bio ?? "");
+        }
+      } catch (error) {
+        if (!mounted) return;
+
+        const errorMessage =
+          error instanceof Error ? error.message : "原因不明のエラーです。";
+
+        setMessage("プロフィールの読み込み中にエラーが起きました：" + errorMessage);
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
       }
-
-      const currentUser = userData.user;
-
-      setUserId(currentUser.id);
-      setEmail(currentUser.email ?? "");
-
-      const { data, error } = await supabaseBrowser
-        .from("profiles")
-        .select("id, display_name, icon_type, bio, area")
-        .eq("id", currentUser.id)
-        .maybeSingle();
-
-      if (error) {
-        setMessage("プロフィールの読み込みに失敗しました：" + error.message);
-        setLoading(false);
-        return;
-      }
-
-      if (data) {
-        const profile = data as Profile;
-
-        setDisplayName(profile.display_name ?? "");
-        setIconType(profile.icon_type ?? "person");
-        setArea(profile.area ?? "");
-        setBio(profile.bio ?? "");
-      }
-
-      setLoading(false);
     }
 
     loadProfile();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   async function saveProfile(event: React.FormEvent<HTMLFormElement>) {
@@ -89,27 +109,34 @@ export default function ProfileClient() {
       return;
     }
 
-    setSaving(true);
-    setMessage("保存しています。");
+    try {
+      setSaving(true);
+      setMessage("保存しています。");
 
-    const { error } = await supabaseBrowser.from("profiles").upsert({
-      id: userId,
-      display_name: displayName.trim() || null,
-      icon_type: iconType,
-      area: area.trim() || null,
-      bio: bio.trim() || null,
-      last_seen_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    });
+      const { error } = await supabaseBrowser.from("profiles").upsert({
+        id: userId,
+        display_name: displayName.trim() || null,
+        icon_type: iconType,
+        area: area.trim() || null,
+        bio: bio.trim() || null,
+        last_seen_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
 
-    setSaving(false);
+      if (error) {
+        setMessage("保存に失敗しました：" + error.message);
+        return;
+      }
 
-    if (error) {
-      setMessage("保存に失敗しました：" + error.message);
-      return;
+      setMessage("プロフィールを保存しました。");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "原因不明のエラーです。";
+
+      setMessage("保存中にエラーが起きました：" + errorMessage);
+    } finally {
+      setSaving(false);
     }
-
-    setMessage("プロフィールを保存しました。");
   }
 
   if (loading) {
