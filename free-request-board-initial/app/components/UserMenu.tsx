@@ -9,9 +9,9 @@ type UserState = {
 };
 
 function ProfileIcon({ type }: { type: string }) {
-  if (type === "house") {
+  if (type === "house" || type === "家") {
     return (
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true">
         <path
           d="M3 10.8L12 3l9 7.8"
           stroke="currentColor"
@@ -58,7 +58,7 @@ function ProfileIcon({ type }: { type: string }) {
   }
 
   return (
-    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true">
       <circle cx="12" cy="8" r="4" fill="currentColor" />
       <path
         d="M4.5 20c1.2-4.2 4-6.2 7.5-6.2s6.3 2 7.5 6.2"
