@@ -33,8 +33,6 @@ export default function AdminQuestionsPage() {
           return;
         }
 
-        await deleteOldArchivedQuestions();
-
         const { data, error } = await supabaseBrowser
           .from("admin_questions")
           .select("id, name, contact, body, status, created_at, archived_at")
@@ -59,17 +57,6 @@ export default function AdminQuestionsPage() {
 
     loadQuestions();
   }, []);
-
-  async function deleteOldArchivedQuestions() {
-    const oneYearAgo = new Date();
-    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-
-    await supabaseBrowser
-      .from("admin_questions")
-      .delete()
-      .not("archived_at", "is", null)
-      .lt("archived_at", oneYearAgo.toISOString());
-  }
 
   async function archiveQuestion(id: string) {
     const now = new Date().toISOString();
