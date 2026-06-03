@@ -8,57 +8,16 @@ type UserState = {
   loading: boolean;
 };
 
-function ProfileIcon({ type }: { type: string }) {
-  if (type === "house" || type === "家") {
-    return (
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true">
-        <path
-          d="M3 10.8L12 3l9 7.8"
-          stroke="currentColor"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M5.5 10.5V21h13V10.5"
-          stroke="currentColor"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M9.5 21v-6h5v6"
-          stroke="currentColor"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
-  if (type === "cat") {
-    return <span aria-hidden="true">🐱</span>;
-  }
-
-  if (type === "tool") {
-    return <span aria-hidden="true">🔧</span>;
-  }
-
-  if (type === "bag") {
-    return <span aria-hidden="true">🛍️</span>;
-  }
-
-  if (type === "bike") {
-    return <span aria-hidden="true">🚲</span>;
-  }
-
-  if (type === "leaf") {
-    return <span aria-hidden="true">🍃</span>;
-  }
-
+function PersonIcon() {
   return (
-    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true">
+    <svg
+      viewBox="0 0 24 24"
+      width="26"
+      height="26"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
       <circle cx="12" cy="8" r="4" fill="currentColor" />
       <path
         d="M4.5 20c1.2-4.2 4-6.2 7.5-6.2s6.3 2 7.5 6.2"
@@ -70,73 +29,38 @@ function ProfileIcon({ type }: { type: string }) {
 
 export default function UserMenu() {
   const [open, setOpen] = useState(false);
-  const [iconType, setIconType] = useState("person");
 
   const [user, setUser] = useState<UserState>({
-  email: null,
-  loading: true
-});
+    email: null,
+    loading: true,
+  });
 
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let mounted = true;
 
-async function loadUser() {
-  const { data } = await supabaseBrowser.auth.getUser();
+    async function loadUser() {
+      const { data } = await supabaseBrowser.auth.getUser();
 
-  if (!mounted) return;
+      if (!mounted) return;
 
-  setUser({
-    email: data.user?.email ?? null,
-    loading: false
-  });
-
-  if (data.user) {
-    const { data: profile } = await supabaseBrowser
-      .from("profiles")
-      .select("icon_type")
-      .eq("id", data.user.id)
-      .maybeSingle();
-
-    if (!mounted) return;
-
-    if (profile?.icon_type) {
-      setIconType(profile.icon_type);
-    } else {
-      setIconType("person");
+      setUser({
+        email: data.user?.email ?? null,
+        loading: false,
+      });
     }
-  } else {
-    setIconType("person");
-  }
-}
 
     loadUser();
 
-const { data: listener } = supabaseBrowser.auth.onAuthStateChange(
-  async (_event, session) => {
-    setUser({
-      email: session?.user?.email ?? null,
-      loading: false
-    });
-
-    if (session?.user) {
-      const { data: profile } = await supabaseBrowser
-        .from("profiles")
-        .select("icon_type")
-        .eq("id", session.user.id)
-        .maybeSingle();
-
-      if (profile?.icon_type) {
-        setIconType(profile.icon_type);
-      } else {
-        setIconType("person");
+    const { data: listener } = supabaseBrowser.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser({
+          email: session?.user?.email ?? null,
+          loading: false,
+        });
       }
-    } else {
-      setIconType("person");
-    }
-  }
-);
+    );
 
     return () => {
       mounted = false;
@@ -147,13 +71,17 @@ const { data: listener } = supabaseBrowser.auth.onAuthStateChange(
   useEffect(() => {
     function closeOnOutsideClick(event: MouseEvent) {
       if (!menuRef.current) return;
+
       if (!menuRef.current.contains(event.target as Node)) {
         setOpen(false);
       }
     }
 
     document.addEventListener("mousedown", closeOnOutsideClick);
-    return () => document.removeEventListener("mousedown", closeOnOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", closeOnOutsideClick);
+    };
   }, []);
 
   const label = user.loading
@@ -170,9 +98,9 @@ const { data: listener } = supabaseBrowser.auth.onAuthStateChange(
         onClick={() => setOpen(!open)}
         aria-label="アカウントメニューを開く"
       >
-<span className="account-icon" aria-hidden="true">
-  <ProfileIcon type={iconType} />
-</span>
+        <span className="account-icon" aria-hidden="true">
+          <PersonIcon />
+        </span>
       </button>
 
       {open && (
@@ -182,20 +110,20 @@ const { data: listener } = supabaseBrowser.auth.onAuthStateChange(
             <p className="account-user-label">{label}</p>
           </div>
 
-<a href="/account" className="account-menu-item">
-  <strong>アカウントページ</strong>
-  <span>ログイン状態やメール認証を確認します。</span>
-</a>
+          <a href="/account" className="account-menu-item">
+            <strong>アカウントページ</strong>
+            <span>ログイン状態やメール認証を確認します。</span>
+          </a>
 
-<a className="account-menu-item" href="/account/profile">
-  <strong>プロフィールを編集する</strong>
-  <span>表示名・アイコン・自己紹介を設定します。</span>
-</a>
+          <a href="/account/profile" className="account-menu-item">
+            <strong>プロフィールを編集する</strong>
+            <span>表示名・アイコン・自己紹介を設定します。</span>
+          </a>
 
-<a href="/new" className="account-menu-item">
-  <strong>依頼をする</strong>
-  <span>困りごとや手伝ってほしいことを投稿します。</span>
-</a>
+          <a href="/new" className="account-menu-item">
+            <strong>依頼をする</strong>
+            <span>困りごとや手伝ってほしいことを投稿します。</span>
+          </a>
 
           <a href="/" className="account-menu-item">
             <strong>依頼を見る</strong>
@@ -204,7 +132,7 @@ const { data: listener } = supabaseBrowser.auth.onAuthStateChange(
 
           <a href="/account#temporary-contact" className="account-menu-item">
             <strong>一時連絡</strong>
-            <span>成立した依頼関係がある場合だけ使える私信箱です。</span>
+            <span>依頼に関する連絡を一時的に行えます。</span>
           </a>
 
           <a href="/account#accepted-requests" className="account-menu-item">
