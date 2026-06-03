@@ -10,11 +10,13 @@ type AdminQuestion = {
   body: string;
   status: string;
   created_at: string;
+  archived_at: string | null;
 };
 
 export default function AdminQuestionsPage() {
   const [loading, setLoading] = useState(true);
   const [questions, setQuestions] = useState<AdminQuestion[]>([]);
+  const [showArchive, setShowArchive] = useState(false);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -31,9 +33,11 @@ export default function AdminQuestionsPage() {
           return;
         }
 
+        await deleteOldArchivedQuestions();
+
         const { data, error } = await supabaseBrowser
           .from("admin_questions")
-          .select("id, name, contact, body, status, created_at")
+          .select("id, name, contact, body, status, created_at, archived_at")
           .order("created_at", { ascending: false });
 
         if (error) {
@@ -56,23 +60,69 @@ export default function AdminQuestionsPage() {
     loadQuestions();
   }, []);
 
-  async function markAsRead(id: string) {
+  async function deleteOldArchivedQuestions() {
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+    await supabaseBrowser
+      .from("admin_questions")
+      .delete()
+      .not("archived_at", "is", null)
+      .lt("archived_at", oneYearAgo.toISOString());
+  }
+
+  async function archiveQuestion(id: string) {
+    const now = new Date().toISOString();
+
     const { error } = await supabaseBrowser
       .from("admin_questions")
-      .update({ status: "read" })
+      .update({
+        status: "archived",
+        archived_at: now,
+      })
       .eq("id", id);
 
     if (error) {
-      setMessage("既読にできませんでした：" + error.message);
+      setMessage("アーカイブできませんでした：" + error.message);
       return;
     }
 
     setQuestions((current) =>
       current.map((question) =>
-        question.id === id ? { ...question, status: "read" } : question
+        question.id === id
+          ? { ...question, status: "archived", archived_at: now }
+          : question
       )
     );
   }
+
+  async function deleteQuestion(id: string) {
+    const confirmed = window.confirm("この質問を削除しますか？");
+
+    if (!confirmed) return;
+
+    const { error } = await supabaseBrowser
+      .from("admin_questions")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      setMessage("削除できませんでした：" + error.message);
+      return;
+    }
+
+    setQuestions((current) =>
+      current.filter((question) => question.id !== id)
+    );
+  }
+
+  const visibleQuestions = questions.filter((question) => {
+    if (showArchive) {
+      return question.status === "archived";
+    }
+
+    return question.status !== "archived";
+  });
 
   if (loading) {
     return (
@@ -91,25 +141,56 @@ export default function AdminQuestionsPage() {
         <h1>管理人への質問一覧</h1>
 
         <p className="muted">
-          利用者から送られた質問を確認できます。このページは管理人用です。
+          利用者から送られた質問を確認できます。確認済みの質問はアーカイブに移動できます。
         </p>
+
+        <div className="actions">
+          <button
+            className={!showArchive ? "button" : "button secondary"}
+            type="button"
+            onClick={() => setShowArchive(false)}
+          >
+            未確認・対応中を見る
+          </button>
+
+          <button
+            className={showArchive ? "button" : "button secondary"}
+            type="button"
+            onClick={() => setShowArchive(true)}
+          >
+            アーカイブを見る
+          </button>
+        </div>
 
         {message && <p className="notice">{message}</p>}
 
-        {questions.length === 0 ? (
-          <p className="notice">現在、質問は届いていません。</p>
+        {visibleQuestions.length === 0 ? (
+          <p className="notice">
+            {showArchive
+              ? "現在、アーカイブ済みの質問はありません。"
+              : "現在、未確認・対応中の質問はありません。"}
+          </p>
         ) : (
           <div className="request-list">
-            {questions.map((question) => (
+            {visibleQuestions.map((question) => (
               <article key={question.id} className="request-card">
                 <h2>
-                  {question.status === "read" ? "確認済み" : "未確認"}の質問
+                  {question.status === "archived"
+                    ? "アーカイブ済みの質問"
+                    : "未確認・対応中の質問"}
                 </h2>
 
                 <p className="meta">
                   送信日時：
                   {new Date(question.created_at).toLocaleString("ja-JP")}
                 </p>
+
+                {question.archived_at && (
+                  <p className="meta">
+                    アーカイブ日時：
+                    {new Date(question.archived_at).toLocaleString("ja-JP")}
+                  </p>
+                )}
 
                 <p>
                   <strong>お名前・呼び名：</strong>
@@ -126,15 +207,27 @@ export default function AdminQuestionsPage() {
                   <p>{question.body}</p>
                 </div>
 
-                {question.status !== "read" && (
-                  <button
-                    className="button secondary"
-                    type="button"
-                    onClick={() => markAsRead(question.id)}
-                  >
-                    確認済みにする
-                  </button>
-                )}
+                <div className="actions">
+                  {question.status !== "archived" && (
+                    <button
+                      className="button secondary"
+                      type="button"
+                      onClick={() => archiveQuestion(question.id)}
+                    >
+                      確認済みにしてアーカイブ
+                    </button>
+                  )}
+
+                  {question.status === "archived" && (
+                    <button
+                      className="button secondary"
+                      type="button"
+                      onClick={() => deleteQuestion(question.id)}
+                    >
+                      削除する
+                    </button>
+                  )}
+                </div>
               </article>
             ))}
           </div>
