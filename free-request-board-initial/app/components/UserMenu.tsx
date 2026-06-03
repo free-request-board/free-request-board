@@ -117,7 +117,12 @@ export default function UserMenu() {
 
           <a href="/account/profile" className="account-menu-item">
             <strong>プロフィールを編集する</strong>
-            <span>表示名・アイコン・自己紹介を設定します。</span>
+            <span>表示名・在住都道府県名（交通費込みの報酬相談などで重宝します）・自己紹介を設定します。</span>
+          </a>
+
+          <a href="/contact-admin" className="account-menu-item">
+            <strong>管理人へ質問する</strong>
+            <span>ログインできない場合や使い方について相談できます。</span>
           </a>
 
           <a href="/new" className="account-menu-item">
