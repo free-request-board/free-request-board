@@ -68,49 +68,6 @@ function ProfileIcon({ type }: { type: string }) {
   );
 }
 
-function AccountIconShape({ iconType }: { iconType: string }) {
-  if (iconType === "house") {
-    return <span aria-hidden="true">⌂</span>;
-  }
-
-  if (iconType === "tool") {
-    return <span aria-hidden="true">🔧</span>;
-  }
-
-  if (iconType === "cat") {
-    return <span aria-hidden="true">🐱</span>;
-  }
-
-  if (iconType === "bag") {
-    return <span aria-hidden="true">🛍️</span>;
-  }
-
-  if (iconType === "bike") {
-    return <span aria-hidden="true">🚲</span>;
-  }
-
-  if (iconType === "leaf") {
-    return <span aria-hidden="true">🍃</span>;
-  }
-
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="26"
-      height="26"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="8" r="4" fill="currentColor" />
-      <path
-        d="M4.5 20c1.2-4.2 4-6.2 7.5-6.2s6.3 2 7.5 6.2"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
 export default function UserMenu() {
   const [open, setOpen] = useState(false);
   const [iconType, setIconType] = useState("person");
