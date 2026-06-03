@@ -36,7 +36,7 @@ export default function ContactAdminPage() {
       setName("");
       setContact("");
       setBody("");
-      setMessage("送信しました。管理人が確認します。");
+      setMessage("送信しました。管理人からの返信をお待ちください。");
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "原因不明のエラーです。";
