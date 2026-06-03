@@ -7,20 +7,9 @@ import { supabaseBrowser } from "../../../lib/supabaseBrowser";
 type Profile = {
   id: string;
   display_name: string | null;
-  icon_type: string | null;
   bio: string | null;
   area: string | null;
 };
-
-const iconOptions = [
-  { value: "person", label: "人" },
-  { value: "house", label: "家" },
-  { value: "tool", label: "工具" },
-  { value: "cat", label: "猫" },
-  { value: "bag", label: "買い物" },
-  { value: "bike", label: "自転車" },
-  { value: "leaf", label: "葉っぱ" },
-];
 
 export default function ProfileClient() {
   const [loading, setLoading] = useState(true);
@@ -30,7 +19,6 @@ export default function ProfileClient() {
   const [email, setEmail] = useState("");
 
   const [displayName, setDisplayName] = useState("");
-  const [iconType, setIconType] = useState("person");
   const [area, setArea] = useState("");
   const [bio, setBio] = useState("");
 
@@ -61,7 +49,7 @@ export default function ProfileClient() {
 
         const { data, error } = await supabaseBrowser
           .from("profiles")
-          .select("id, display_name, icon_type, bio, area")
+          .select("id, display_name, bio, area")
           .eq("id", currentUser.id)
           .maybeSingle();
 
@@ -76,7 +64,6 @@ export default function ProfileClient() {
           const profile = data as Profile;
 
           setDisplayName(profile.display_name ?? "");
-          setIconType(profile.icon_type ?? "person");
           setArea(profile.area ?? "");
           setBio(profile.bio ?? "");
         }
@@ -116,7 +103,6 @@ export default function ProfileClient() {
       const { error } = await supabaseBrowser.from("profiles").upsert({
         id: userId,
         display_name: displayName.trim() || null,
-        icon_type: iconType,
         area: area.trim() || null,
         bio: bio.trim() || null,
         last_seen_at: new Date().toISOString(),
@@ -188,20 +174,6 @@ export default function ProfileClient() {
               placeholder="例：大阪の手伝い人"
               maxLength={40}
             />
-          </label>
-
-          <label>
-            <span>アイコン</span>
-            <select
-              value={iconType}
-              onChange={(event) => setIconType(event.target.value)}
-            >
-              {iconOptions.map((icon) => (
-                <option key={icon.value} value={icon.value}>
-                  {icon.label}
-                </option>
-              ))}
-            </select>
           </label>
 
           <label>
