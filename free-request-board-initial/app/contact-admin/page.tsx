@@ -69,7 +69,7 @@ export default function ContactAdminPage() {
           </label>
 
           <label>
-            <span>返信先・連絡先 任意</span>
+            <span>返信先・連絡先 （例；電話番号、メールアドレス、TwitterDMなど）</span>
             <input
               value={contact}
               onChange={(event) => setContact(event.target.value)}
