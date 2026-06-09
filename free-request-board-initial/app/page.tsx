@@ -1,4 +1,5 @@
 import { supabaseAdmin } from "../lib/supabaseAdmin";
+import AnonymousAuth from "./components/AnonymousAuth";
 
 type RequestRow = {
   id: string;
@@ -36,6 +37,8 @@ export default async function HomePage() {
         <p className="muted">
           掃除、片付け、買い物、空き家確認、軽作業、探しもの相談など、地域の小さな困りごとを投稿できる試験運用中の掲示板です。
         </p>
+
+        <AnonymousAuth />
       </section>
 
       <section className="panel">
