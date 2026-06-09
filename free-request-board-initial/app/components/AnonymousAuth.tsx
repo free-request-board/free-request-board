@@ -4,39 +4,60 @@ import { useEffect, useState } from "react";
 import { supabaseBrowser } from "../../lib/supabaseBrowser";
 
 export default function AnonymousAuth() {
+  const [status, setStatus] = useState("匿名IDを確認しています。");
   const [anonymousId, setAnonymousId] = useState("");
 
   useEffect(() => {
     async function setupAnonymousUser() {
-      const { data: sessionData } = await supabaseBrowser.auth.getSession();
+      try {
+        const { data: sessionData, error: sessionError } =
+          await supabaseBrowser.auth.getSession();
 
-      if (sessionData.session?.user) {
-        setAnonymousId(sessionData.session.user.id.slice(0, 8));
-        return;
-      }
+        if (sessionError) {
+          setStatus("匿名IDの確認に失敗しました：" + sessionError.message);
+          return;
+        }
 
-      const { data, error } = await supabaseBrowser.auth.signInAnonymously();
+        if (sessionData.session?.user) {
+          setAnonymousId(sessionData.session.user.id.slice(0, 8));
+          setStatus("");
+          return;
+        }
 
-      if (error) {
-        console.error("匿名IDの作成に失敗しました", error.message);
-        return;
-      }
+        const { data, error } = await supabaseBrowser.auth.signInAnonymously();
 
-      if (data.user) {
-        setAnonymousId(data.user.id.slice(0, 8));
+        if (error) {
+          setStatus("匿名IDの作成に失敗しました：" + error.message);
+          return;
+        }
+
+        if (data.user) {
+          setAnonymousId(data.user.id.slice(0, 8));
+          setStatus("");
+          return;
+        }
+
+        setStatus("匿名IDを取得できませんでした。");
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "原因不明のエラーです。";
+
+        setStatus("匿名IDの処理中にエラーが起きました：" + errorMessage);
       }
     }
 
     setupAnonymousUser();
   }, []);
 
-  if (!anonymousId) {
-    return null;
-  }
-
   return (
     <div className="notice">
-      あなたの匿名ID：{anonymousId}
+      {anonymousId ? (
+        <>
+          あなたの匿名ID：<strong>{anonymousId}</strong>
+        </>
+      ) : (
+        status
+      )}
     </div>
   );
 }
