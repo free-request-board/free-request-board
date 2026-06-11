@@ -52,6 +52,30 @@ export default async function HomePage() {
         </p>
       </section>
 
+      <div className="notice">
+  <strong>ご利用前にご確認ください</strong>
+  <ul>
+    <li>この掲示板は、同じ端末・同じブラウザでの利用を前提にしています。</li>
+    <li>ブラウザの履歴、Cookie、サイトデータを削除すると、匿名IDが変わる場合があります。</li>
+    <li>連絡先は掲示板上に直接書かず、匿名会話ルームで必要に応じて交換してください。</li>
+    <li>依頼内容、報酬、日時、危険性などは当事者同士でよく確認してください。</li>
+  </ul>
+</div>
+
+<div className="actions">
+  <a href="/new" className="button">
+    依頼を投稿する
+  </a>
+
+  <a href="/chat" className="button secondary">
+    💬 チャット
+  </a>
+</div>
+
+<p className="muted">
+  下へスクロールすると、掲載中の依頼を確認できます。
+</p>
+
       <section>
         <h2>掲載中の依頼</h2>
         {requests.length === 0 ? (
