@@ -47,11 +47,13 @@ export default function NewRequestForm() {
       <div><label>危険性・注意点</label><input name="risk_notes" placeholder="例：階段あり、重いものあり、屋外作業" /></div>
       <div className="grid">
         <div><label>表示名</label><input name="nickname" placeholder="例：依頼者A、匿名希望" /></div>
-        <div>
-  <label>非公開連絡先</label>
-  <p className="muted">
-    管理人が緊急時のみ確認する連絡先です。サイト上には公開されません。
-  </p>
+<div>
+  <label>
+    非公開連絡先
+    <span className="field-help">
+      管理人が非常時のみ確認する連絡先です。サイト上には公開されません。
+    </span>
+  </label>
   <input
     name="owner_contact"
     required
