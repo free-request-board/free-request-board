@@ -208,3 +208,9 @@ textarea { min-height: 130px; resize: vertical; }
   color: #667085;
   line-height: 1.6;
 }
+
+.header-links {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
