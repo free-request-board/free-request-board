@@ -136,3 +136,19 @@ export default function NewRequestForm() {
     </form>
   );
 }
+
+.field-help {
+  display: block;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #667085;
+  line-height: 1.6;
+}
+
+.header-links {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
