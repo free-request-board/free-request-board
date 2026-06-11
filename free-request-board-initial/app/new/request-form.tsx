@@ -46,19 +46,28 @@ export default function NewRequestForm() {
       <div><label>必要な技術・資格</label><input name="skills" placeholder="例：特になし、軽トラがある方、力仕事に慣れている方" /></div>
       <div><label>危険性・注意点</label><input name="risk_notes" placeholder="例：階段あり、重いものあり、屋外作業" /></div>
       <div className="grid">
-        <div><label>表示名</label><input name="nickname" placeholder="例：依頼者A、匿名希望" /></div>
-<div>
-  <label>
-    非公開連絡先
-    <span className="field-help">
-      管理人が非常時のみ確認する連絡先です。サイト上には公開されません。
-    </span>
-  </label>
-  <input
-    name="owner_contact"
-    required
-    placeholder="メールアドレスまたは電話番号"
-  />
+        <div className="grid">
+  <div>
+    <label>表示名</label>
+    <input
+      name="nickname"
+      placeholder="例：依頼者A、匿名希望"
+    />
+  </div>
+
+  <div>
+    <label>
+      非公開連絡先
+      <span className="field-help">
+        管理人が非常時のみ確認する連絡先です。サイト上には公開されません。
+      </span>
+    </label>
+    <input
+      name="owner_contact"
+      required
+      placeholder="メールアドレスまたは電話番号"
+    />
+  </div>
 </div>
       {error && <p className="warning">{error}</p>}
       <button className="button" disabled={loading}>{loading ? "投稿中..." : "投稿する"}</button>
