@@ -47,8 +47,17 @@ export default function NewRequestForm() {
       <div><label>危険性・注意点</label><input name="risk_notes" placeholder="例：階段あり、重いものあり、屋外作業" /></div>
       <div className="grid">
         <div><label>表示名</label><input name="nickname" placeholder="例：依頼者A、匿名希望" /></div>
-        <div><label>非公開連絡先</label><input name="owner_contact" required placeholder="メールアドレスまたは電話番号" /></div>
-      </div>
+        <div>
+  <label>非公開連絡先</label>
+  <p className="muted">
+    管理人が緊急時のみ確認する連絡先です。サイト上には公開されません。
+  </p>
+  <input
+    name="owner_contact"
+    required
+    placeholder="メールアドレスまたは電話番号"
+  />
+</div>
       {error && <p className="warning">{error}</p>}
       <button className="button" disabled={loading}>{loading ? "投稿中..." : "投稿する"}</button>
     </form>
