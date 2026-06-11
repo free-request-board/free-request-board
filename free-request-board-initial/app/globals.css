@@ -198,3 +198,13 @@ textarea { min-height: 130px; resize: vertical; }
 .user-menu .account-menu-item:hover span {
   color: #eef1e8;
 }
+
+.field-help {
+  display: block;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #667085;
+  line-height: 1.6;
+}
