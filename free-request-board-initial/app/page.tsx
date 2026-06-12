@@ -71,6 +71,10 @@ export default async function HomePage() {
   <a href="/my-requests" className="button secondary">
     自分の依頼を確認する
   </a>
+
+  <a href="/my-applications" className="button secondary">
+    申請した依頼を確認する
+  </a>
 </div>
 
 <section className="panel">
