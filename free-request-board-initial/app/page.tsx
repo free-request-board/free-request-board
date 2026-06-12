@@ -33,7 +33,7 @@ export default async function HomePage() {
   return (
     <main>
       <section className="hero">
-        <h1>小さな依頼を、気軽に掲示できます。</h1>
+        <h1>個人的な依頼を、気軽に掲示できます。</h1>
         <p className="muted">
           掃除、片付け、買い物、空き家確認、軽作業、探しもの相談など、個人の小さな困りごとから大きな困りごとまで幅広く投稿できる掲示板です。
         </p>
