@@ -27,7 +27,7 @@ export default function ContactForm({ requestId }: { requestId: string }) {
     return (
       <div className="notice">
         <h2>申請を送りました</h2>
-        <p>返信確認用のリンクです。保存してください。</p>
+        <p>返信確認用のリンクです。保存してください。依頼者からの返信は、ホームの「申請した依頼を確認する」のボタンからも確認できます。</p>
         <p><a href={result.applicationUrl}>{result.applicationUrl}</a></p>
       </div>
     );
@@ -36,8 +36,8 @@ export default function ContactForm({ requestId }: { requestId: string }) {
   return (
     <form className="form" onSubmit={submit}>
       <div><label>表示名</label><input name="applicant_name" required placeholder="例：近所の者です、手伝えます" /></div>
-      <div><label>非公開連絡先</label><input name="applicant_contact" required placeholder="メールアドレスまたは電話番号" /></div>
-      <div><label>依頼者へのメッセージ</label><textarea name="message" required placeholder="対応できること、希望条件などを書いてください" /></div>
+      <div><label>依頼者と連絡する連絡先（電話番号とメールアドレスは記載推奨（依頼者が使えない連絡サービスがあるため））</label><input name="applicant_contact" required placeholder="メールアドレスまたは電話番号、その他には各種サービス（LINEなど）を記載" /></div>
+      <div><label>依頼者へのメッセージ</label><textarea name="message" required placeholder="対応できること、希望条件、気になることなどを書いてください" /></div>
       {error && <p className="warning">{error}</p>}
       <button className="button" disabled={loading}>{loading ? "送信中..." : "送信する"}</button>
     </form>
