@@ -35,7 +35,7 @@ export default async function HomePage() {
       <section className="hero">
         <h1>小さな依頼を、気軽に掲示できます。</h1>
         <p className="muted">
-          掃除、片付け、買い物、空き家確認、軽作業、探しもの相談など、地域の小さな困りごとを投稿できる試験運用中の掲示板です。
+          掃除、片付け、買い物、空き家確認、軽作業、探しもの相談など、個人の小さな困りごとから大きな困りごとまで幅広く投稿できる掲示板です。
         </p>
 
         <AnonymousAuth />
@@ -57,7 +57,8 @@ export default async function HomePage() {
   <ul>
     <li>この掲示板は、同じ端末・同じブラウザでの利用を前提にしています。</li>
     <li>ブラウザの履歴、Cookie、サイトデータを削除すると、匿名IDが変わる場合があります。</li>
-    <li>連絡先は掲示板上に直接書かず、匿名会話ルームで必要に応じて交換してください。</li>
+    <li>連絡先は掲示板上に直接書かず、依頼者への依頼引き受けの申請時に申請内容としてご記載ください。</li>
+    <li>申請と申請内容の記載は、掲示板上の依頼の詳細を確認するをクリックすると「この依頼に連絡する」ボタンが現れるので、クリックすると申請できます。</li>
     <li>依頼内容、報酬、日時、危険性などは当事者同士でよく確認してください。</li>
   </ul>
 </div>
@@ -67,11 +68,11 @@ export default async function HomePage() {
     依頼を投稿する
   </a>
 
-  <a href="/chat" className="button secondary">
-    💬 チャット
+  <a href="/help" className="button secondary">
+    依頼投稿と依頼引き受けの仕方を見る
   </a>
 </div>
-
+      
 <p className="muted">
   下へスクロールすると、掲載中の依頼を確認できます。
 </p>
