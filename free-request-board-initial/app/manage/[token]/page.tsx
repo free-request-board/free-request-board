@@ -24,7 +24,8 @@ export default async function ManagePage({ params }: { params: { token: string }
       <section className="panel">
         <h1>依頼管理</h1>
         <p><strong>{req.title}</strong></p>
-        <p className="muted">このページは管理リンクを持つ人だけが見られます。</p>
+        <p className="muted">このページはあなたの今のIDからのアクセスのみ閲覧可能です。IDが変更された場合リセットされます。</p>
+        <p>リセットされた場合は、コメントに「掲示終了」と書き込み、新たに依頼を掲示してください。申請者へ返信できなくなった場合も同様に、コメント機能をうまくご活用ください。</p>
         <OwnerActions token={params.token} requestId={req.id} status={req.status} />
       </section>
 
@@ -37,7 +38,7 @@ export default async function ManagePage({ params }: { params: { token: string }
             <div className="message" key={app.id}>
               <h3>{app.applicant_name}</h3>
               <p>{app.message}</p>
-              <p className="muted">非公開連絡先：{app.applicant_contact}</p>
+              <p className="muted">連絡先：{app.applicant_contact}</p>
               <details>
                 <summary>この人とのメッセージ箱</summary>
                 {(app.messages ?? []).sort((a:any,b:any)=>a.created_at.localeCompare(b.created_at)).map((m: any) => (
