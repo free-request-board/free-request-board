@@ -115,9 +115,9 @@ export default function NewRequestForm() {
 
         <div>
           <label>
-            非公開連絡先
+            連絡先
             <span className="field-help">
-              管理人が非常時のみ確認する連絡先です。サイト上には公開されません。
+              先述した通り、管理人が緊急時のみ確認する連絡先です。サイト上には非公開です。
             </span>
           </label>
           <input
