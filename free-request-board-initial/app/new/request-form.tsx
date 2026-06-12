@@ -2,10 +2,38 @@
 
 import { useState } from "react";
 
+type SavedRequest = {
+  title: string;
+  manageUrl: string;
+  savedAt: string;
+};
+
 export default function NewRequestForm() {
   const [result, setResult] = useState<{ manageUrl: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  function saveManageUrl(title: string, manageUrl: string) {
+    const key = "my_request_manage_links";
+
+    try {
+      const currentText = window.localStorage.getItem(key);
+      const current: SavedRequest[] = currentText ? JSON.parse(currentText) : [];
+
+      const next: SavedRequest[] = [
+        {
+          title,
+          manageUrl,
+          savedAt: new Date().toISOString(),
+        },
+        ...current.filter((item) => item.manageUrl !== manageUrl),
+      ];
+
+      window.localStorage.setItem(key, JSON.stringify(next));
+    } catch {
+      // localStorageが使えない場合でも、投稿自体は成功させます。
+    }
+  }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -13,7 +41,10 @@ export default function NewRequestForm() {
     setLoading(true);
     setError(null);
 
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
+    const title = String(form.get("title") ?? "").trim();
+
     const res = await fetch("/api/requests", { method: "POST", body: form });
     const json = await res.json();
 
@@ -22,6 +53,10 @@ export default function NewRequestForm() {
     if (!res.ok) {
       setError(json.error ?? "投稿に失敗しました");
       return;
+    }
+
+    if (json.manageUrl) {
+      saveManageUrl(title || "無題の依頼", json.manageUrl);
     }
 
     setResult({ manageUrl: json.manageUrl });
@@ -33,12 +68,14 @@ export default function NewRequestForm() {
         <h2>依頼を投稿しました</h2>
 
         <p>
-          このリンクを保存してください。依頼の終了・削除、申請確認に使います。ホームの「自分の依頼を確認する」ボタンからも同じリンクに飛べます。
+          このリンクを保存してください。依頼の終了・削除、申請確認に使います。
+          ホームの「自分の依頼を確認する」ボタンからも同じリンクに飛べます。
         </p>
 
         <p>
           IDが変更されると自分の依頼を操作、申請の確認ができなくなります。
-          できなくなった場合は、掲示中の依頼のコメントに掲示終了と書き込み、新たに依頼を立ち上げてください。
+          できなくなった場合は、掲示中の依頼のコメントに掲示終了と書き込み、
+          新たに依頼を立ち上げてください。
         </p>
 
         <p>
@@ -47,9 +84,19 @@ export default function NewRequestForm() {
 
         <p className="warning">このリンクを他人に見せないでください。</p>
 
-        <a className="button" href="/">
-          一覧へ戻る
-        </a>
+        <p>
+          この依頼は、この端末・このブラウザの「自分の依頼を確認する」ページにも保存されました。
+        </p>
+
+        <div className="actions">
+          <a className="button" href="/">
+            一覧へ戻る
+          </a>
+
+          <a className="button secondary" href="/my-requests">
+            自分の依頼を確認する
+          </a>
+        </div>
       </div>
     );
   }
@@ -122,7 +169,8 @@ export default function NewRequestForm() {
           <label>
             連絡先
             <span className="field-help">
-              先述した通り、管理人が緊急時のみ確認する連絡先です。サイト上には非公開です。
+              先述した通り、管理人が緊急時のみ確認する連絡先です。
+              サイト上には非公開です。
             </span>
           </label>
           <input
