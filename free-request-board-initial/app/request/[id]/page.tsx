@@ -48,17 +48,6 @@ export default async function RequestDetailPage({
             {data.risk_notes}
           </p>
         )}
-
-        <p className="notice">
-          依頼の取引終了後に依頼の掲示を削除するか、
-          「管理人へ質問する」ボタンから、管理人に削除してほしい旨をお伝えください。
-        </p>
-
-        <p className="notice">
-          申請者から申請内容と一緒に、連絡先、メールアドレスや電話番号が送られます。
-          もしわからないことや、その連絡方法が難しい場合は、コメントか、
-          「申請者へ返信する」ボタンの内容にその旨をご記載ください。
-        </p>
       </article>
 
       <section className="panel">
