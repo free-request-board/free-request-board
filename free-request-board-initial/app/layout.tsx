@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "関西 小さな依頼掲示板",
+  title: "なんでも依頼掲示板",
   description:
-    "関西圏の小さな困りごと・お手伝い依頼を投稿できる掲示板です。依頼者の連絡先は公開されません。",
+    "個々人の依頼をその程度が大きいものから小さいものまで幅広く掲示できる掲示板です。",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -58,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <footer className="site-footer">
             <p>
-              地域の小さな依頼を、気軽に投稿できる試験運用中の掲示板です。
+              個人の依頼を掲示しその受注（引受け）ができる掲示板・コミュニティです。
             </p>
           </footer>
         </div>
