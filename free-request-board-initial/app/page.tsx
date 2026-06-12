@@ -68,8 +68,12 @@ export default async function HomePage() {
     依頼を投稿する
   </a>
 
+  <a href="/my-requests" className="button secondary">
+    自分の依頼を確認する
+  </a>
+
   <a href="/help" className="button secondary">
-    依頼投稿と依頼引き受けの仕方を見る
+    使い方を見る
   </a>
 </div>
       
