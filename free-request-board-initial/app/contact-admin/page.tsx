@@ -14,7 +14,7 @@ export default function ContactAdminPage() {
     event.preventDefault();
 
     if (!body.trim()) {
-      setMessage("質問内容、または不明内容を入力してください。");
+      setMessage("質問内容や不明内容、申請内容などを入力してください。");
       return;
     }
 
